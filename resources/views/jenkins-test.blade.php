@@ -8,7 +8,7 @@
     <h1>Laravel Jenkins Pipeline Working</h1>
 
     <p>
-        Build Status: SUCCESS
+    SUCCESS
     </p>
 
     <p>
