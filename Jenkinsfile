@@ -4,8 +4,23 @@ pipeline {
 
     stages {
 
-        stage('Project Check') {
+
+        stage('Install Dependencies') {
+
             steps {
+
+                bat '''
+                composer install --no-interaction
+                '''
+
+            }
+        }
+
+
+        stage('Project Check') {
+
+            steps {
+
                 echo 'Checking Laravel Project'
 
                 bat 'php -v'
@@ -13,39 +28,49 @@ pipeline {
                 bat 'composer -V'
 
                 bat 'php artisan --version'
-            }
-        }
 
-
-        stage('Install Dependencies') {
-            steps {
-                bat 'composer install --no-interaction'
             }
         }
 
 
         stage('Laravel Setup') {
+
             steps {
+
                 bat '''
-                copy .env.example .env
+                if not exist .env copy .env.example .env
+
                 php artisan key:generate
+
                 '''
+
             }
         }
 
 
         stage('Run Laravel Test') {
+
             steps {
-                bat 'php artisan test'
+
+                bat '''
+                php artisan test
+
+                '''
+
             }
         }
 
 
         stage('Success') {
+
             steps {
-                echo 'Laravel Jenkins Pipeline Completed'
+
+                echo 'Laravel CI Pipeline Completed Successfully'
+
             }
         }
 
+
     }
+
 }
